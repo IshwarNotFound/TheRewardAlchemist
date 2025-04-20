@@ -1,0 +1,42 @@
+# requirements.txt for The Reward Alchemist
+
+# ======================================================================
+# == !! IMPORTANT INSTALLATION ORDER !! ==
+# ======================================================================
+# 1. Install PyTorch FIRST using the official command for your system:
+#    https://pytorch.org/get-started/locally/
+#    (Select OS, pip, Python, CPU/CUDA)
+#
+# 2. Install PyTorch Geometric packages SECOND, matching your PyTorch version:
+#    https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html
+#    (This often involves installing torch-scatter, torch-sparse first)
+#
+# 3. ONLY AFTER completing steps 1 & 2 successfully, run:
+#    pip install -r requirements.txt
+# ======================================================================
+
+# Core Data Science & Utility Libraries
+pandas>=1.3.0
+numpy>=1.21.0
+scikit-learn>=1.0.0
+joblib>=1.0.0
+tqdm>=4.60.0 # Used in training script progress bars
+
+# Web Framework
+Flask>=2.0.0
+
+# NLP / Embeddings
+sentence-transformers>=2.2.0
+
+# --- PyTorch & PyTorch Geometric (Placeholders - Install Manually First!) ---
+# See IMPORTANT section above. These lines mainly document the need for them.
+torch>=1.13.0,<2.0.0 # Or specify the exact version you installed
+torch-scatter>=2.1.0 # Version depends on PyTorch/CUDA
+torch-sparse>=0.6.17  # Version depends on PyTorch/CUDA
+torch-geometric>=2.3.0 # Version depends on PyTorch/CUDA
+
+# --- Optional (If reading .xlsx files directly) ---
+# openpyxl>=3.0.0
+
+# Note: For exact replication, use 'pip freeze > requirements.txt' in your
+# activated virtual environment once all packages are installed and working.
