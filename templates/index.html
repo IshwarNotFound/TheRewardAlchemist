@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<!-- Start of the HTML document -->
+<head>
+    <!-- Meta tags for character set and responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page Title -->
+    <title> The Reward Alchemist </title>
+
+    <!-- External CSS Libraries -->
+    <!-- Bootstrap CSS for styling and layout -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Google Fonts for custom typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom Internal CSS -->
+    <style>
+        /* Defines CSS variables for the theme colors and fonts */
+        :root {
+            --primary-color: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --secondary-color: #7c3aed;
+            --tertiary-color: #d946ef;
+            --accent-color: #fbbf24;
+            --bg-dark: #1e1b4b;
+            --bg-darker: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text-color: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border-color: #475569;
+            --success-color: #10b981;
+            --warning-color: #fbbf24;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --font-family: 'Space Grotesk', 'Cinzel', serif;
+        }
+
+        /* Defines base CSS animations used throughout the page */
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.9; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes glow { 0% { box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); } 50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.4); } 100% { box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); } }
+        @keyframes loadingTextPulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+        @keyframes floatSymbols { 0% { transform: translateY(0) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-15px) rotate(5deg); opacity: 0.6; } 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; } }
+        @keyframes boil { 0%, 100% { transform: translateY(2px) scale(1.02); } 50% { transform: translateY(-2px) scale(0.98); } }
+        @keyframes bubbleRise { 0% { bottom: 0; opacity: 0; } 20% { opacity: 0.7; } 80% { opacity: 0.7; } 100% { bottom: 100%; opacity: 0; } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeInOut { 0%, 100% { transform: scale(0.8); opacity: 0; } 20%, 80% { transform: scale(1); opacity: 0.8; } }
+        @keyframes ingredientFloat { 0% { transform: translateY(50px) rotate(0deg); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-50px) rotate(360deg); opacity: 0; } }
+        @keyframes cauldronSway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+
+        /* Base styles for the body, applying background gradient and fonts */
+        body {
+            background: linear-gradient(-45deg, #1e1b4b, #312e81, #4c1d95, #2e1065);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: var(--text-color);
+            font-family: var(--font-family);
+            padding-bottom: 80px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Container styles for centering content */
+        .container { max-width: 1200px; position: relative; }
+
+        /* Sparkle effect styles (used by JavaScript) */
+        .sparkle {
+            position: fixed; width: 5px; height: 5px; border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.6);
+            pointer-events: none; z-index: 9990; opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: transform, opacity;
+        }
+
+        /* Header section styling */
+        .site-header { text-align: center; padding: 3rem 0 2rem; position: relative; }
+        .logo-container { display: inline-block; position: relative; margin-bottom: 1rem; animation: float 6s ease-in-out infinite; }
+        .logo-text {
+            font-family: 'Space Grotesk', 'Cinzel', serif;
+            background: linear-gradient(90deg, #8b5cf6, #d946ef, #fbbf24);
+            font-size: 3.5rem; font-weight: 700; background-size: 250% auto;
+            background-clip: text; -webkit-background-clip: text; color: transparent;
+            text-shadow: 0 2px 10px rgba(139, 92, 246, 0.2);
+            animation: gradientBG 10s linear infinite; letter-spacing: -1px; line-height: 1.2;
+        }
+        .logo-text span { font-size: 3rem; vertical-align: middle; display: inline-block; }
+        .tagline { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; font-weight: 300; letter-spacing: 1px; opacity: 0; animation: fadeIn 1s ease-out forwards 0.5s; }
+
+        /* Glassmorphism card styles */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75); border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12); padding: 30px; margin-bottom: 30px;
+            transition: all 0.3s ease-out; opacity: 0; animation: fadeIn 1s ease-out forwards 0.8s;
+            position: relative;
+        }
+        .glass-card::before {
+            content: "⚗️"; position: absolute; top: 15px; right: 15px;
+            font-size: 1.8rem; opacity: 0.15; z-index: 0;
+            pointer-events: none; color: var(--secondary-color);
+        }
+        .glass-card:hover { box-shadow: 0 12px 45px rgba(139, 92, 246, 0.25); transform: translateY(-6px); border-color: rgba(139, 92, 246, 0.35); }
+        .card-header-custom { border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; }
+        .card-title { color: var(--text-color); font-size: 1.5rem; font-weight: 600; margin: 0; display: flex; align-items: center; }
+        .card-title-gradient { background: linear-gradient(90deg, var(--primary-color), var(--tertiary-color)); background-clip: text; -webkit-background-clip: text; color: transparent; padding-left: 5px; }
+        .section-icon { font-size: 1.8rem; color: var(--accent-color); animation: pulse 3s ease-in-out infinite; line-height: 1; }
+
+        /* Form element styling (labels, inputs, selects, checkboxes) */
+        .form-label { font-weight: 500; color: var(--text-muted); margin-bottom: 0.6rem; font-size: 0.9rem; display: flex; align-items: center; }
+        .form-label i { margin-right: 8px; color: var(--secondary-color); }
+        .required-label::after { content: "*"; color: var(--tertiary-color); margin-left: 4px; font-size: 1.1em; }
+        .form-control, .form-select { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2) inset; color: var(--text-color); border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.95rem; transition: all 0.3s ease; }
+        .form-select option { background-color: var(--bg-darker); color: var(--text-color); }
+        .form-control::placeholder { color: rgba(203, 213, 225, 0.5); opacity: 1; }
+        .form-control:focus, .form-select:focus { background: rgba(30, 41, 59, 0.9); border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3), 0 2px 8px rgba(139, 92, 246, 0.2) inset; color: var(--text-color); }
+        .checkbox-group { max-height: 250px; overflow-y: auto; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); padding: 15px 20px; border-radius: 10px; scrollbar-width: thin; scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0.2); }
+        .checkbox-group::-webkit-scrollbar { width: 6px; }
+        .checkbox-group::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .checkbox-group::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        .form-check { padding-left: 0; margin-bottom: 0.5rem; }
+        .form-check-input { background-color: rgba(71, 85, 105, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); width: 1.3em; height: 1.3em; margin-top: 0.15em; border-radius: 4px; cursor: pointer; vertical-align: middle; float: left; margin-right: 0.6em; }
+        .form-check-input:checked { background-color: var(--tertiary-color); border-color: var(--tertiary-color); background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e"); }
+        .form-check-input:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3); outline: none; }
+        .form-check-label { color: var(--text-color); cursor: pointer; font-size: 0.85rem; display: block; overflow: hidden; line-height: 1.4; }
+
+        /* Button styling (gradient and outline variants) */
+        .btn { position: relative; transition: all 0.3s ease-out; font-weight: 600; overflow: hidden; }
+        .btn::after { content: ''; position: absolute; top: -50%; left: -50%; width: 20px; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: rotate(30deg) translateX(-150px); transition: transform 0.6s ease-in-out; z-index: 1; }
+        .btn:hover::after { transform: rotate(30deg) translateX(250px); }
+        .btn span { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; }
+        .btn-gradient { background: linear-gradient(45deg, #7c3aed, #d946ef); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(124, 58, 237, 0.3), 0 0 0 1px rgba(124, 58, 237, 0.2); color: white; padding: 0.9rem 2.5rem; font-size: 1.1rem; border-radius: 50px; }
+        .btn-gradient:hover { background: linear-gradient(45deg, #8b5cf6, #ec4899); box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5), 0 0 0 1px rgba(124, 58, 237, 0.3); transform: translateY(-3px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .btn-gradient:active { transform: translateY(1px); box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2), 0 0 0 1px rgba(124, 58, 237, 0.1); }
+        .btn-outline { background: transparent; border: 2px solid var(--secondary-color); color: var(--secondary-color); padding: 0.7rem 1.8rem; font-size: 1rem; border-radius: 50px; }
+        .btn-outline:hover { background-color: rgba(124, 58, 237, 0.15); color: var(--text-color); box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2); border-color: var(--primary-color); }
+
+        /* Results section styling */
+        .results-section { opacity: 0; margin-top: 3rem; }
+        .results-section.animate-in { animation: fadeIn 1s ease-out forwards; }
+        .satisfaction-container { background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(217, 70, 239, 0.15)); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 30px; backdrop-filter: blur(6px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); animation: glow 4s ease-in-out infinite alternate; position: relative; overflow: hidden; }
+        .satisfaction-container::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%237c3aed' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); border-radius: 16px; opacity: 0.5; z-index: 0; pointer-events: none; }
+        .satisfaction-display { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.3rem; background: linear-gradient(90deg, var(--primary-color), var(--tertiary-color)); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1.1; position: relative; z-index: 1; }
+        .tier-display { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 0; position: relative; z-index: 1; }
+        .tier-display i { color: var(--accent-color); }
+        .recommendation-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2); margin-bottom: 1.8rem; border-radius: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; opacity: 0; }
+        .recommendation-card:nth-child(odd) { animation: fadeIn 0.6s ease-out forwards; animation-delay: calc(0.15s * var(--card-index, 1)); }
+        .recommendation-card:nth-child(even) { animation: slideInRight 0.6s ease-out forwards; animation-delay: calc(0.15s * var(--card-index, 1)); }
+        .recommendation-card:hover { transform: translateY(-10px) scale(1.015); box-shadow: 0 20px 40px rgba(124, 58, 237, 0.35); border-color: rgba(139, 92, 246, 0.5); }
+        .recommendation-card .card-header { background: linear-gradient(90deg, #7c3aed, #a78bfa); color: white; font-weight: 600; font-size: 1.15rem; border: none; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+        .card-index { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.15); border-radius: 50%; margin-right: 12px; font-size: 0.95rem; }
+        .recommendation-card .card-body { padding: 1.5rem; }
+        .recommendation-card .card-subtitle { color: var(--accent-color); font-size: 1rem; font-weight: 500; margin-bottom: 1rem; display: flex; align-items: center; }
+        .recommendation-card .card-subtitle i { margin-right: 8px;}
+        .recommendation-card p { margin-bottom: 0.8rem; line-height: 1.6; color: var(--text-muted); }
+        .recommendation-card strong { color: var(--text-color); font-weight: 500; }
+        .metrics-container { display: flex; margin-top: 1.2rem; padding: 12px; background: rgba(0, 0, 0, 0.25); border-radius: 10px; justify-content: space-around; font-size: 0.9rem; border: 1px solid rgba(139, 92, 246, 0.1); }
+        .metric { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; }
+        .metric-value { font-size: 1.15rem; font-weight: 600; color: var(--accent-color); margin-bottom: 2px; }
+        .metric-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .recommendation-card .card-footer { background: rgba(0, 0, 0, 0.25); font-style: normal; padding: 1rem 1.5rem; border-top: 1px solid rgba(139, 92, 246, 0.2); color: var(--text-muted); display: flex; align-items: center; }
+        .recommendation-card .card-footer i { color: var(--accent-color); margin-right: 8px; }
+
+        /* Badge styling for location matches */
+        .badge { padding: 0.4em 0.8em; font-weight: 500; border-radius: 50px; font-size: 0.8em; }
+        .badge.bg-success { background: rgba(16, 185, 129, 0.2) !important; color: var(--success-color) !important; border: 1px solid rgba(16, 185, 129, 0.4); box-shadow: none; }
+        .badge.bg-warning { background: rgba(251, 191, 36, 0.2) !important; color: var(--warning-color) !important; border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: none; }
+
+        /* Alert styling for errors and info messages */
+        .alert { border-radius: 12px; padding: 1.2rem 1.5rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); margin-bottom: 2rem; border-width: 1px; border-style: solid; display: flex; align-items: center; }
+        .alert i { font-size: 1.2em; margin-right: 12px;}
+        .alert-danger { background-color: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; }
+        .alert-info { background-color: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.4); color: #67e8f9; }
+
+        /* Loading overlay and animation styling */
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.4s ease-in-out; }
+        #loading-overlay.visible { display: flex; opacity: 1; }
+        .alchemy-loader { position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; }
+        .cauldron { position: absolute; width: 120px; height: 90px; transform-origin: center bottom; animation: cauldronSway 3s ease-in-out infinite; z-index: 2; }
+        .cauldron-body { position: absolute; bottom: 0; width: 100%; height: 80%; background: #2d3748; border-radius: 0 0 60px 60px; box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.3), 0 15px 25px rgba(0, 0, 0, 0.4); }
+        .cauldron-rim { position: absolute; top: 18px; left: -10px; width: 140px; height: 14px; background: #4a5568; border-radius: 7px; z-index: 3; }
+        .cauldron-handles { position: absolute; top: 30px; left: -15px; width: 150px; height: 25px; z-index: 1; }
+        .cauldron-handles::before, .cauldron-handles::after { content: ''; position: absolute; top: 0; width: 25px; height: 25px; border: 6px solid #4a5568; border-radius: 50%; }
+        .cauldron-handles::before { left: 0; border-right: none; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+        .cauldron-handles::after { right: 0; border-left: none; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+        .potion { position: absolute; bottom: 10px; width: 90px; height: 50px; border-radius: 0 0 45px 45px; overflow: hidden; }
+        .potion-liquid { position: absolute; bottom: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color)); animation: boil 2s ease-in-out infinite alternate; }
+        .potion-bubble { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.6); animation: bubbleRise 3s ease-in-out infinite; opacity: 0.7; }
+        .potion-bubble:nth-child(2) { left: 30%; width: 8px; height: 8px; animation-delay: 0.5s; animation-duration: 2.5s; }
+        .potion-bubble:nth-child(3) { left: 60%; width: 6px; height: 6px; animation-delay: 0.8s; animation-duration: 3.2s; }
+        .magic-elements { position: absolute; width: 200px; height: 200px; animation: rotate 20s linear infinite; z-index: 1; }
+        .magic-symbol { position: absolute; font-size: 18px; color: #f8fafc; opacity: 0; animation: fadeInOut 5s ease-in-out infinite; }
+        .symbol-1 { top: 20px; left: 50%; color: var(--accent-color); animation-delay: 0s; } .symbol-2 { top: 50%; right: 20px; color: var(--info-color); animation-delay: 1s; } .symbol-3 { bottom: 20px; left: 50%; color: var(--tertiary-color); animation-delay: 2s; } .symbol-4 { top: 50%; left: 20px; color: var(--success-color); animation-delay: 3s; } .symbol-5 { top: 35%; left: 35%; color: var(--primary-color); animation-delay: 4s; }
+        .ingredient { position: absolute; width: 15px; height: 15px; border-radius: 50%; z-index: 0; opacity: 0; animation: ingredientFloat 5s ease-in-out infinite; }
+        .ingredient-1 { background: var(--accent-color); animation-delay: 0.5s; left: 60%; top: 120px; } .ingredient-2 { background: var(--tertiary-color); width: 10px; height: 10px; animation-delay: 1.5s; left: 30%; top: 100px; } .ingredient-3 { background: var(--success-color); width: 12px; height: 12px; animation-delay: 2.5s; left: 45%; top: 140px; }
+        .loading-text { margin-top: 40px; font-size: 1.5rem; font-weight: 600; background: linear-gradient(90deg, var(--primary-color), var(--tertiary-color), var(--accent-color)); background-clip: text; -webkit-background-clip: text; color: transparent; animation: loadingTextPulse 2s ease-in-out infinite; }
+        .loading-subtext { margin-top: 10px; color: var(--text-muted); font-size: 1rem; opacity: 0.8; }
+
+        /* Styling for the horizontal divider */
+        .fancy-divider { height: 1px; background: linear-gradient(to right, transparent 0%, rgba(139, 92, 246, 0.3) 20%, rgba(217, 70, 239, 0.6) 50%, rgba(139, 92, 246, 0.3) 80%, transparent 100%); margin: 3rem 0; position: relative; border: none; }
+        .fancy-divider::before { content: "⚗️"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--bg-dark); padding: 0 15px; color: var(--accent-color); font-size: 1.3rem; }
+
+        /* Styling for floating background symbols */
+        .alchemy-symbol { position: absolute; font-size: 2rem; opacity: 0.3; z-index: -1; animation: floatSymbols 6s ease-in-out infinite; color: var(--secondary-color); pointer-events: none; }
+
+        /* Responsive design adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .logo-text { font-size: 2.8rem; } .logo-text span { font-size: 2.5rem; } .tagline { font-size: 1.1rem; }
+            .glass-card { padding: 25px; } .glass-card::before { font-size: 1.5rem; top: 10px; right: 10px; }
+            .btn-gradient { padding: 0.8rem 2rem; font-size: 1rem; } .satisfaction-display { font-size: 2.2rem; }
+            .metrics-container { flex-direction: column; gap: 10px; align-items: center;} .metric { width: 80%; }
+            .form-check-input { width: 1.4em; height: 1.4em; } .alchemy-loader { transform: scale(0.8); }
+            .loading-text { font-size: 1.3rem; } .loading-subtext { font-size: 0.9rem; } .alchemy-symbol { font-size: 1.5rem; }
+            .checkbox-group .col-md-4 { width: 50%; }
+            .checkbox-group .col-sm-6 { width: 100%; }
+            .form-check-label { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Container for floating background alchemy symbols -->
+    <div class="position-fixed w-100 h-100" style="pointer-events: none; overflow: hidden; top: 0; left: 0; z-index: -1;">
+        <span class="alchemy-symbol" style="top: 10%; left: 5%;">⚗️</span>
+        <span class="alchemy-symbol" style="top: 30%; right: 10%; animation-delay: 1s;">🧪</span>
+        <span class="alchemy-symbol" style="bottom: 20%; left: 15%; animation-delay: 2s;">🔮</span>
+        <span class="alchemy-symbol" style="bottom: 40%; right: 20%; animation-delay: 3s;">📜</span>
+        <span class="alchemy-symbol" style="top: 60%; left: 20%; animation-delay: 4s;">⚱️</span>
+    </div>
+
+    <!-- Loading Overlay: Shown while waiting for server response -->
+    <div id="loading-overlay">
+        <div class="alchemy-loader">
+            <!-- Animated cauldron visual -->
+            <div class="cauldron">
+                <div class="cauldron-body"></div>
+                <div class="cauldron-rim"></div>
+                <div class="cauldron-handles"></div>
+                <div class="potion">
+                    <div class="potion-liquid"></div>
+                    <div class="potion-bubble"></div>
+                    <div class="potion-bubble"></div>
+                    <div class="potion-bubble"></div>
+                </div>
+            </div>
+            <!-- Animated magic symbols and ingredients -->
+            <div class="magic-elements">
+                <div class="magic-symbol symbol-1">✦</div> <div class="magic-symbol symbol-2">⚗️</div> <div class="magic-symbol symbol-3">✨</div> <div class="magic-symbol symbol-4">⚱️</div> <div class="magic-symbol symbol-5">🔮</div>
+            </div>
+            <div class="ingredient ingredient-1"></div> <div class="ingredient ingredient-2"></div> <div class="ingredient ingredient-3"></div>
+        </div>
+        <!-- Text displayed during loading -->
+        <div class="loading-text" role="status" aria-live="polite">Brewing Your Perfect Rewards...</div>
+        <div class="loading-subtext">Mixing Preferences & Distilling Recommendations</div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container mt-4">
+        <!-- Site Header Section -->
+        <header class="site-header">
+            <div class="logo-container">
+                <!-- Main Site Title -->
+                <h1 class="logo-text">
+                    <span><i class="fas fa-flask mx-2"></i></span> <!-- Left Icon -->
+                    The Reward Alchemist <!-- Text -->
+                    <span><i class="fas fa-vial mx-2"></i></span> <!-- Right Icon -->
+                </h1>
+            </div>
+            <!-- Site Tagline -->
+            <p class="tagline">Brewing Personalized Perks from Persona Potions</p>
+        </header>
+
+        <!-- User Profile Input Form Section -->
+        <section id="profile-form">
+            <div class="glass-card"> <!-- Apply glassmorphism effect -->
+                <div class="card-header-custom">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-astronaut section-icon"></i> <!-- Icon -->
+                        <span class="card-title-gradient">Build Your Profile</span> <!-- Gradient Title -->
+                    </h2>
+                </div>
+                <!-- The main form for submitting user data -->
+                <form action="/predict" method="post" id="recommendation-form">
+                    <!-- Bootstrap Grid Row for layout -->
+                    <div class="row g-4">
+                        <!-- User ID Input (Optional) -->
+                        <div class="col-md-6">
+                            <label for="user_id" class="form-label"> <i class="fas fa-fingerprint fa-fw"></i>User ID <small class="ms-1">(Optional)</small> </label>
+                            <!-- Jinja2 populates value if form was previously submitted -->
+                            <input type="text" class="form-control" id="user_id" name="user_id" placeholder="e.g., USER_1A2B3C" value="{{ submitted_data.user_id if submitted_data and submitted_data.user_id else '' }}">
+                        </div>
+                        <!-- Location Select (Required) -->
+                        <div class="col-md-6">
+                            <label for="location" class="form-label required-label"> <i class="fas fa-map-marker-alt fa-fw"></i>Location </label>
+                            <!-- Jinja2 populates options and selects previous value -->
+                            <select class="form-select" id="location" name="location" required>
+                                <option value="" disabled {{ 'selected' if not submitted_data or not submitted_data.location else '' }}>Select Your City...</option>
+                                {% for loc in options.locations %}
+                                <option value="{{ loc.lower() }}" {{ 'selected' if submitted_data and submitted_data.location and loc.lower() == submitted_data.location|lower else '' }}>{{ loc }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Age Group Select (Optional) -->
+                        <div class="col-md-6">
+                            <label for="age_group" class="form-label"> <i class="fas fa-birthday-cake fa-fw"></i>Age Group <small class="ms-1">(Optional)</small> </label>
+                            <select class="form-select" id="age_group" name="age_group">
+                                <option value="unknown" {{ 'selected' if not submitted_data or not submitted_data.age_group or submitted_data.age_group == 'unknown' else '' }}>Select Age Range...</option>
+                                {% for age in options.age_groups %}
+                                <option value="{{ age.lower() }}" {{ 'selected' if submitted_data and submitted_data.age_group and age.lower() == submitted_data.age_group|lower else '' }}>{{ age }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Device Type Select (Optional) -->
+                        <div class="col-md-6">
+                            <label for="device_type" class="form-label"> <i class="fas fa-mobile-alt fa-fw"></i>Device Type <small class="ms-1">(Optional)</small> </label>
+                            <select class="form-select" id="device_type" name="device_type">
+                                <option value="unknown" {{ 'selected' if not submitted_data or not submitted_data.device_type or submitted_data.device_type == 'unknown' else '' }}>Select Device...</option>
+                                {% for dev in options.device_types %}
+                                <option value="{{ dev.lower() }}" {{ 'selected' if submitted_data and submitted_data.device_type and dev.lower() == submitted_data.device_type|lower else '' }}>{{ dev | title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Activity Level Select (Required) -->
+                        <div class="col-md-6">
+                            <label for="activity_level" class="form-label required-label"> <i class="fas fa-chart-line fa-fw"></i>Activity Level </label>
+                            <select class="form-select" id="activity_level" name="activity_level" required>
+                                <option value="" disabled {{ 'selected' if not submitted_data or not submitted_data.activity_level else '' }}>Select Activity Frequency...</option>
+                                {% for act in options.activity_levels %}
+                                <option value="{{ act.lower() }}" {{ 'selected' if submitted_data and submitted_data.activity_level and act.lower() == submitted_data.activity_level|lower else '' }}>{{ act | title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Spending Level Select (Optional) -->
+                        <div class="col-md-6">
+                            <label for="monetary_level" class="form-label"> <i class="fas fa-coins fa-fw"></i>Spending Level <small class="ms-1">(Optional)</small> </label>
+                            <select class="form-select" id="monetary_level" name="monetary_level">
+                                <option value="unknown" {{ 'selected' if not submitted_data or not submitted_data.monetary_level or submitted_data.monetary_level == 'unknown' else '' }}>Select Spending Category...</option>
+                                {% for mon in options.monetary_levels %}
+                                <option value="{{ mon.lower() }}" {{ 'selected' if submitted_data and submitted_data.monetary_level and mon.lower() == submitted_data.monetary_level|lower else '' }}>{{ mon | title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Weather Select (Optional) -->
+                        <div class="col-md-6">
+                            <label for="simulated_weather" class="form-label"> <i class="fas fa-cloud-sun fa-fw"></i>Current Weather <small class="ms-1">(Optional)</small> </label>
+                            <select class="form-select" id="simulated_weather" name="simulated_weather">
+                                <option value="unknown" {{ 'selected' if not submitted_data or not submitted_data.simulated_weather or submitted_data.simulated_weather == 'unknown' else '' }}>Select Weather Condition...</option>
+                                {% for weather in options.weather_options %}
+                                <option value="{{ weather.lower() }}" {{ 'selected' if submitted_data and submitted_data.simulated_weather and weather.lower() == submitted_data.simulated_weather|lower else '' }}>{{ weather | title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Empty column used for visual alignment in the grid -->
+                        <div class="col-md-6"></div>
+
+                        <!-- Interests Checkbox Group -->
+                        <div class="col-12 mt-3">
+                            <label for="interests" class="form-label"> <i class="fas fa-heart fa-fw"></i>Interests <small class="ms-1">(Select preferred)</small> </label>
+                            <div class="checkbox-group">
+                                <div class="row g-2"> <!-- Nested row for responsive checkbox columns -->
+                                    <!-- Jinja2 loop to generate checkboxes for each interest -->
+                                    {% for interest in options.common_interests %}
+                                        <div class="col-sm-6 col-md-4"> <!-- Adjust columns based on screen size -->
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="{{ interest.lower() }}" id="interest_{{ loop.index }}" {{ 'checked' if submitted_data and submitted_data.interests and interest.lower() in submitted_data.interests else '' }}>
+                                                <label class="form-check-label" for="interest_{{ loop.index }}"> {{ interest | title }} </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Watch Categories Checkbox Group -->
+                        <div class="col-12 mt-3">
+                            <label for="recent_watch_categories" class="form-label"> <i class="fas fa-tv fa-fw"></i>Watch Categories <small class="ms-1">(Select recent)</small> </label>
+                            <div class="checkbox-group">
+                                <div class="row g-2"> <!-- Nested row for responsive checkbox columns -->
+                                    <!-- Jinja2 loop to generate checkboxes for each watch category -->
+                                    {% for cat in options.common_watch_categories %}
+                                        <div class="col-sm-6 col-md-4"> <!-- Adjust columns based on screen size -->
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="recent_watch_categories" value="{{ cat.lower() }}" id="watch_{{ loop.index }}" {{ 'checked' if submitted_data and submitted_data.recent_watch_categories and cat.lower() in submitted_data.recent_watch_categories else '' }}>
+                                                <label class="form-check-label" for="watch_{{ loop.index }}"> {{ cat | title }} </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End of Bootstrap Grid Row -->
+
+                    <!-- Form Submit Button -->
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-gradient">
+                            <span><i class="fas fa-flask me-2"></i>Brew My Rewards</span>
+                        </button>
+                    </div>
+                </form> <!-- End of the form -->
+            </div> <!-- End of glass-card -->
+        </section> <!-- End of profile-form section -->
+
+        <!-- Results Display Section: Conditionally shown only after form submission -->
+        {% if submitted %}
+            <!-- Fancy Divider -->
+            <hr class="fancy-divider">
+            <!-- Results Section Container -->
+            <section id="results-section" class="results-section animate-in">
+                <!-- Section Title -->
+                 <h2 class="card-title text-center mb-4" style="display: block;">
+                     <i class="fas fa-star section-icon"></i> <span class="card-title-gradient">Your Curated Recommendations</span>
+                 </h2>
+                 <!-- Error Message Display (If applicable) -->
+                 {% if error %}
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle flex-shrink-0 me-3"></i>
+                        <div> <strong>Error:</strong> {{ error }} </div>
+                    </div>
+                    <!-- Button to reset form if there's an error -->
+                    <div class="text-center mt-4">
+                        <a href="/" class="btn btn-outline"> <span><i class="fas fa-redo me-2"></i>Try Again</span> </a>
+                    </div>
+                 <!-- Recommendations Display (If no error) -->
+                 {% else %}
+                    <!-- Check if recommendations were generated -->
+                    {% if results %}
+                        <!-- Satisfaction Score and User Tier Display -->
+                        <div class="satisfaction-container">
+                            <div class="satisfaction-display"> {{ "%.2f"|format(satisfaction) }}% Match Score </div>
+                            <div class="tier-display"> <i class="fas fa-crown me-1"></i>Segment: {{ results[0].tier }} </div>
+                        </div>
+                        <!-- Grid Row for Recommendation Cards -->
+                        <div class="row">
+                            <!-- Jinja2 loop to iterate through each recommendation -->
+                            {% for rec in results %}
+                                <!-- Column for each recommendation card -->
+                                <div class="col-lg-6" style="--card-index: {{ loop.index }};"> <!-- CSS variable for animation delay -->
+                                    <!-- Individual Recommendation Card -->
+                                    <div class="recommendation-card">
+                                        <!-- Card Header: Business Name and Campaign ID -->
+                                        <div class="card-header">
+                                            <div class="d-flex align-items-center">
+                                                <div class="card-index">{{ loop.index }}</div> <!-- Rank Number -->
+                                                <span>{{ rec.business_name | title }}</span> <!-- Business Name -->
+                                            </div>
+                                            <small class="opacity-75">{{ rec.campaign_id }}</small> <!-- Campaign ID -->
+                                        </div>
+                                        <!-- Card Body: Details -->
+                                        <div class="card-body">
+                                            <!-- Category -->
+                                            <h6 class="card-subtitle"> <i class="fas fa-tag"></i>{{ rec.category.title() }} </h6>
+                                            <!-- Promo Text -->
+                                            <p class="card-text"><strong><i class="fas fa-percent fa-fw me-1"></i>Promo:</strong> {{ rec.promo.title() }}</p>
+                                            <!-- Location and Proximity Badge -->
+                                            <p class="card-text">
+                                                <strong><i class="fas fa-map-marker-alt fa-fw me-1"></i> Location:</strong> {{ rec.location.title() }}
+                                                {% if rec.proximity_level == 2 %}
+                                                <span class="badge bg-success ms-2"><i class="fas fa-check-circle me-1"></i>Exact Match</span>
+                                                {% elif rec.proximity_level == 1 %}
+                                                <span class="badge bg-warning ms-2"><i class="fas fa-map me-1"></i>Region Match</span>
+                                                {% endif %}
+                                            </p>
+                                            <!-- Metrics Display: Relevance, Interest Fit, History Fit -->
+                                            <div class="metrics-container">
+                                                <div class="metric"> <div class="metric-value">{{ "%.4f"|format(rec.score) }}</div> <div class="metric-label">Relevance</div> </div>
+                                                <div class="metric"> <div class="metric-value">{{ "%.3f"|format(rec.interest_promo_sim) }}</div> <div class="metric-label">Interest Fit</div> </div>
+                                                <div class="metric"> <div class="metric-value">{{ "%.3f"|format(rec.watch_cat_sim) }}</div> <div class="metric-label">History Fit</div> </div>
+                                            </div>
+                                        </div>
+                                        <!-- Card Footer: Recommendation Reason (Explainability) -->
+                                        {% if rec.reason %}
+                                            <div class="card-footer"> <i class="fas fa-lightbulb"></i> {{ rec.reason }} </div>
+                                        {% endif %}
+                                    </div> <!-- End of individual recommendation-card -->
+                                </div> <!-- End of column -->
+                            {% endfor %} <!-- End of recommendation loop -->
+                        </div> <!-- End of results row -->
+                        <!-- Button to start a new recommendation -->
+                        <div class="text-center mt-4 mb-3">
+                             <a href="/" class="btn btn-outline"> <span><i class="fas fa-sync-alt me-2"></i>New Recommendation</span> </a>
+                        </div>
+                    <!-- Message if no recommendations were found -->
+                    {% else %}
+                        <div class="alert alert-info d-flex align-items-center text-center" role="alert">
+                            <i class="fas fa-info-circle flex-shrink-0 me-3"></i>
+                            <div class="w-100">
+                                No specific recommendations found this time. Maybe broaden your interests or watch history?
+                                <div class="mt-3"> <a href="/" class="btn btn-outline"> <span><i class="fas fa-redo me-2"></i>Try Again</span> </a> </div>
+                            </div>
+                        </div>
+                    {% endif %} <!-- End of results check -->
+                 {% endif %} <!-- End of error check -->
+            </section> <!-- End of results-section -->
+        {% endif %} <!-- End of submitted check -->
+    </div> <!-- End of Main Content Container -->
+
+    <!-- JavaScript Libraries -->
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Custom JavaScript for interactions, loading overlay, and animations -->
+    <script>
+        // Get references to key DOM elements
+        const form = document.getElementById('recommendation-form');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const resultsSection = document.getElementById('results-section');
+        const loadingTextElement = loadingOverlay ? loadingOverlay.querySelector('.loading-text') : null;
+        let loadingInterval = null; // Interval timer for loading text animation
+
+        // Function to show the loading overlay and start text animation
+        function showLoading() {
+            if (!loadingOverlay) { console.error("Loading overlay element not found!"); return; }
+            loadingOverlay.classList.add('visible'); // Make overlay visible
+
+            // Animate loading text if element exists
+            if (loadingTextElement) {
+                let phrases = [ "Brewing Your Perfect Rewards", "Mixing Magical Ingredients", "Stirring The Reward Potion", "Distilling Personalized Offers" ];
+                let currentPhrase = 0;
+                let dots = 0;
+                if (loadingInterval) clearInterval(loadingInterval); // Clear previous interval if any
+                loadingTextElement.textContent = phrases[0]; // Set initial text
+                // Start interval to cycle through phrases and add dots
+                loadingInterval = setInterval(() => {
+                    dots = (dots + 1) % 4;
+                    if (dots === 0) currentPhrase = (currentPhrase + 1) % phrases.length;
+                    if (loadingTextElement) loadingTextElement.textContent = `${phrases[currentPhrase]}${'.'.repeat(dots)}`;
+                    else { clearInterval(loadingInterval); loadingInterval = null; } // Stop if element disappears
+                }, 600);
+            } else { console.warn("Loading text element not found inside overlay."); }
+        }
+
+        // Function to hide the loading overlay and stop text animation
+        function hideLoading() {
+            if (!loadingOverlay) return;
+            loadingOverlay.classList.remove('visible'); // Hide overlay
+            if (loadingInterval) { clearInterval(loadingInterval); loadingInterval = null; } // Clear interval
+            if(loadingTextElement) loadingTextElement.textContent = 'Brewing Your Perfect Rewards...'; // Reset text
+        }
+
+        // Add submit event listener to the form
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                // Basic client-side validation for required fields
+                const location = document.getElementById('location');
+                const activity = document.getElementById('activity_level');
+                let isValid = true;
+                if (!location || location.value === "") { alert('Please select a location!'); isValid = false; }
+                if (isValid && (!activity || activity.value === "")) { alert('Please select an activity level!'); isValid = false; }
+
+                // Prevent submission and exit if invalid
+                if (!isValid) { event.preventDefault(); console.log("Form validation failed."); return; }
+
+                // Show loading overlay if valid
+                showLoading();
+            });
+        } else { console.warn("Recommendation form element not found."); }
+
+        // Add listener for 'pageshow' event (handles browser back/forward caching)
+        window.addEventListener('pageshow', function(event) {
+            // If the page was loaded from cache (e.g., back button)
+            if (event.persisted) {
+                hideLoading(); // Ensure loading overlay is hidden
+                // Re-trigger fade-in animation for results if they exist
+                if (resultsSection && document.body.contains(resultsSection)) {
+                    resultsSection.style.opacity = '0';
+                    void resultsSection.offsetWidth; // Force reflow
+                    resultsSection.classList.remove('animate-in');
+                    void resultsSection.offsetWidth; // Force reflow
+                    resultsSection.classList.add('animate-in');
+                }
+            }
+        });
+
+        // Function to create a sparkle effect at mouse coordinates
+        function createSparkle(e) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            document.body.appendChild(sparkle);
+            const x = e.clientX; const y = e.clientY;
+            const size = Math.random() * 4 + 2; // Random size
+            sparkle.style.left = `${x}px`; sparkle.style.top = `${y}px`;
+            sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+            void sparkle.offsetWidth; // Trigger reflow for transition
+            // Random direction and distance for sparkle animation
+            const angle = Math.random() * 360;
+            const distance = Math.random() * 40 + 20;
+            const transform = `translate(${Math.cos(angle * Math.PI / 180) * distance}px, ${Math.sin(angle * Math.PI / 180) * distance}px) scale(0)`;
+            sparkle.style.transform = transform; sparkle.style.opacity = '0';
+            // Remove sparkle element after animation completes
+            setTimeout(() => sparkle.remove(), 600);
+        }
+
+        // Throttle function to limit how often a function can be called
+        function throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // Run when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            hideLoading(); // Hide loading overlay on initial load
+
+            // Setup sparkle effect on header and buttons
+            const header = document.querySelector('.site-header');
+            const buttons = document.querySelectorAll('.btn-gradient');
+            const throttledSparkle = throttle(createSparkle, 50); // Limit sparkle creation rate
+            if (header) header.addEventListener('mousemove', throttledSparkle);
+            buttons.forEach(btn => btn.addEventListener('mousemove', throttledSparkle));
+
+            // Set CSS variable for animation delay staggering on recommendation cards
+            const cards = document.querySelectorAll('.recommendation-card');
+            cards.forEach((card, index) => card.style.setProperty('--card-index', index));
+
+            // Trigger results section animation if it exists on load
+            if (resultsSection && document.body.contains(resultsSection)) {
+                resultsSection.classList.add('animate-in');
+            }
+        });
+    </script>
+</body>
+</html>
+<!-- End of the HTML document -->
