@@ -108,22 +108,33 @@ This option trains the model using the provided CSV files and generates fresh ar
 
 **Option B: Use Pre-Trained Artifacts (Faster Demo)**
 
-Use this option if the `preprocessed_data_gnn` folder containing valid, pre-generated artifacts (`.pkl`, `.csv`, `.pt` files) is already included in the repository or if you ran Option A previously and want to restart the app quickly.
+**Option B: Use Pre-Trained Artifacts (Faster Demo)**
 
-1.  **Verify Artifacts:** Ensure the `preprocessed_data_gnn` folder exists and contains the necessary files.
-2.  **Run the Flask App Directly:** Skip the training step.
+Use this option to run the web application directly using pre-generated model artifacts, skipping the potentially long training step.
+
+1.  **Download Artifacts:** Download the required pre-trained artifacts from the following link:
+    (https://drive.google.com/drive/folders/1rQwge6fpm50_P9-rfJTVew_jJTV_DPqC?usp=sharing)]
+    *(This link points to a folder or ZIP file containing the `preprocessed_data_gnn` directory)*
+2.  **Place Artifacts:** Unzip the downloaded file (if applicable) and place the entire `preprocessed_data_gnn` folder directly into the main project directory (the same level as `app.py` and `main.py`). Your structure should look like:
+    ```
+    YourProjectFolder/
+    ├── app.py
+    ├── main.py
+    ├── data/
+    ├── templates/
+    ├── preprocessed_data_gnn/  <-- Place the downloaded folder here
+    │   ├── recommender_gnn_artifacts_hackathon_final_v2.pkl
+    │   ├── campaigns_preprocessed_gnn_hackathon_final_v2.csv
+    │   └── graph_data_hackathon_final_v2.pt
+    ├── requirements.txt
+    └── README.md
+    ```
+3.  **Verify Setup:** Ensure all dependencies are installed (Steps 1-4 from the Setup Guide).
+4.  **Run the Flask App Directly:**
     ```bash
     python app.py
     ```
-3.  **Access:** Open your web browser to `http://127.0.0.1:5000`.
-
-## 📄 Key Files Overview
-
-*   `main.py`: Data loading (from `data/`), preprocessing, GNN model definition, training loop, evaluation, artifact saving (to `preprocessed_data_gnn/`). **Run first (Option A).**
-*   `app.py`: Flask web application, loads artifacts (from `preprocessed_data_gnn/`), handles prediction requests (on-demand embeddings, hybrid ranking, explainability), serves UI. **Run second (Option A) or directly (Option B).**
-*   `templates/index.html`: Frontend HTML, CSS, JavaScript for the user interface.
-*   `data/`: Contains the **provided** input CSV files.
-
+5.  **Access:** Open your web browser to `http://127.0.0.1:5000`.
 ## deliverables
 
 *   **Source Code:** Contained within this repository, cleaned and commented.
