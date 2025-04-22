@@ -45,6 +45,9 @@ The underlying GNN model demonstrated strong performance in learning user-campai
 
 The Reward Alchemist moves beyond basic recommendations. By intelligently combining graph-based learning (strong AUC), semantic understanding, and essential contextual rules (location), it delivers recommendations that feel intuitive and genuinely personalized. The explainability fosters trust, the dynamic tiering adds user insight, and the focus on a practical satisfaction metric directly addresses the hackathon challenge with an effective, well-executed solution.
 
-
-
 ---
+
+**Acknowledgments:**
+
+Portions of the code structure, explanations, frontend refinements, and documentation were developed with the assistance of AI models, primarily Google's Gemini and Anthropic's Claude, used iteratively for ideation, debugging, and code generation support throughout the hackathon process.
+
